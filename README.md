@@ -2,7 +2,7 @@
 ATML Project Eurlex Dataset MultiClass Problem
 
 
-## Sebastian Folder:
+## Sebastian's Folder:
   Download arff File and eurovoc qrel\
   Put in same Folder as 3 Python files
   1. Execute preprocess.py
