@@ -13,7 +13,7 @@ ATML Project Eurlex Dataset MultiClass Problem
   
   **Install Libraries like Pandas, nltk, bs4 and pathlib before running the code! 
   
-  Download the zip file from: http://www.ke.tu-darmstadt.de/files/resources/eurlex/eurlex_html_EN_NOT.zip
+  Download the zip file from: http://www.ke.tu-darmstadt.de/files/resources/eurlex/eurlex_html_EN_NOT.zip \
   Put in same Folder as the .ipynb files
   1. Run cells one by one in text_scraping (zipped_html).ipynb
   2. You'll get a file named "output.csv" in your folder containing all the scraped text and labels (uncleaned!).
