@@ -1,0 +1,44 @@
+Once the preprocessing is done and we have our
+data in a tuple form (doctext,labellist) where the first entry
+is the preprocessed text of the document and the second entry
+of the tuple is a list of labels we can start to bring it into a form
+applicable to Machine Learning algorithms.
+
+First we build a dictionary of all words contained in all documents.
+We then filter this dictionary to only contain english words, since
+our corpus should only contain english documents. Hence all words
+containing greek letters or letters with some kind of mark are excluded from the dictionary
+since they don't belong to the english language.
+
+We also build a bigram dictionary. Taking every word in each document and appending the next word.
+So each bigram in the dictionary is at least in one document. Again we only use english words.
+If an non-english word occurs it is skipped in the process.
+The bigrams allow us to capture sequential information about the text providing
+at least a little order in the words, compared to the classic Bag of Words representation with the normal dictionary.
+
+We also keep a full dictionary with the words containing non english letters for a comparison
+to the english dict to collate the performance we will get out of those representations.
+
+An IDF dictionary is also created. Here we compute the idf value for every single item in the
+word dictionary. We use this dictionary later to compute the tf/idf value for the vector representation.
+
+At last we also build a Dictionary for the labels.
+
+So we end up with a Mapping for every word/bigram/label to an distinct index or in the idf dictionary case to a corresponding idf value.
+
+Now we can use our dicts to create vector representations of our documents.
+Naturally the vector size will be equal to the dictionary size of the dictionary used.
+So the bigram representation for example will have more dimensions than the bag of words representation.
+
+For our project we consider 3 different representations.
+The first one being the "trivial" Bag of Words representation where each element in the vector represents the frequency of the corresponding word in that document.
+The second one being the bigram Bag of Words model which is identically to the normal BoW Representation with the difference that instead of looking at single words
+we consider bigrams.
+The last representation is the tf-idf where we calculate the tf/idf value for each element in the dictionary for every document.
+The labels are handled accordingly resulting in a Vector of size ~4000 having one entries for labels that are assigned to the document and zero otherwise.
+
+We will only calculate the Vector Represenation batch wise since they are really big in size (especially the bigram representation)
+so we don't run into the problem of memory overflow.
+
+
+ 
