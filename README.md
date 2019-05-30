@@ -24,7 +24,7 @@ ATML Project Eurlex Dataset MultiClass Problem
 
   ### For New Files (Downloaded from eurlex_download_EN_NOT.sh script)
   
-  Note: Install Libraries like *pandas*, *nltk*, *bs4* and *pathlib* before running the code! 
+  Note: Install Libraries like *pandas, nltk, bs4 and pathlib* before running the code! 
   
   Download the dataset zip file from: https://drive.google.com/open?id=1NmCggWwJT3W-SBeAQDcA3FH44IiJzCH8 \
   Put in same Folder as the .py files
