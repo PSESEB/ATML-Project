@@ -2,14 +2,14 @@
 ATML Project Eurlex Dataset MultiClass Problem
 
 
-## Sebastian's Folder:
+# Sebastian's Folder:
   Download arff File and eurovoc qrel\
   Put in same Folder as 3 Python files
   1. Execute preprocess.py
   2. call preprocessLabels.py
   3. Use BuildVectors.py to build number vectors
 
-## Chetan's Folder:
+# Chetan's Folder:
   
   ### For Old Files (eurlex_html_EN_NOT.zip)
   
