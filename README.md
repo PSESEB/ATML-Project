@@ -24,7 +24,7 @@ ATML Project Eurlex Dataset MultiClass Problem
 
   ### For New Files (Downloaded from eurlex_download_EN_NOT.sh script)
   
-  Note: Install Libraries like *pandas, *nltk, *bs4 and *pathlib before running the code! 
+  Note: Install Libraries like *pandas*, *nltk*, *bs4* and *pathlib* before running the code! 
   
   Download the dataset zip file from: https://drive.google.com/open?id=1NmCggWwJT3W-SBeAQDcA3FH44IiJzCH8 \
   Put in same Folder as the .py files
@@ -33,4 +33,4 @@ ATML Project Eurlex Dataset MultiClass Problem
   2. Run text_cleaning_htmlwebscript.py
   3. You'll get a file named "final_cleaned.csv" in your folder containing all the cleaned text and labels.
   
-  *You can find the final cleaned data in a .csv file here: https://drive.google.com/open?id=1u_TtIx7L3NeedbeJdJKBDf5WTpfeHIRi
+  *You can find the final cleaned data in a .csv file here: https://drive.google.com/open?id=1u_TtIx7L3NeedbeJdJKBDf5WTpfeHIRi*
