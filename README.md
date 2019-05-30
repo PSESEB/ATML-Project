@@ -13,7 +13,7 @@ ATML Project Eurlex Dataset MultiClass Problem
   
   ### For Old Files (eurlex_html_EN_NOT.zip)
   
-  Note: Install Libraries like *pandas, *nltk, *bs4 and *pathlib before running the code! 
+  Note: Install Libraries like *pandas, nltk, bs4 and pathlib* before running the code! 
   
   Download the dataset zip file from: http://www.ke.tu-darmstadt.de/files/resources/eurlex/eurlex_html_EN_NOT.zip \
   Put in same Folder as the .ipynb files
