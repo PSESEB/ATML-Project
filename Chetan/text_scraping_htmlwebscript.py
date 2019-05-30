@@ -61,4 +61,3 @@ for count, filename in enumerate(base.iterdir()):
 df = pd.DataFrame(docs)
 df.to_csv('final_scraped.csv', header = None, index = None)
 
-
