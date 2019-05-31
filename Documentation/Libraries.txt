@@ -1,0 +1,5 @@
+USED Librabries:
+Python : liac-arff
+https://github.com/LakshKD/liac-arff
+
+tensorflow, pickle, numpy
