@@ -11,6 +11,16 @@ def translate(inp, dic, invert_dict=False):
 	return vec
 
 
+def sequenceTranslate(inp,dic,invert_dict=False):
+	if invert_dict:
+		dic = {v: k for k, v in dic.items()}
+	vec = []
+	for x in inp:
+		if x in dic:
+			vec.append(dic[x])
+	return np.array(vec)
+
+
 def translateNGram(inp,dic, n,invert_dict=False):
 	if invert_dict:
 		dic = {v: k for k, v in dic.items()}
@@ -41,16 +51,3 @@ def tfIdfTranslate(inp, dic, idf, invert_dict=False):
 	for t in tf:
 		vec[dic[t]] = tf[t]/idf[t]
 	return vec
-
-doc = ["this", "is", "a", "document", "is","a","is"]
-dicti = {"this is":1, "is a": 0, "a document":3, "document is":2}
-
-print(translateNGram(doc,dicti,2))
-
-
-data =  pickle.load( open( "dataWlabelsAndDicts.pkl", "rb" ))
-points = data['idf']
-
-print(points)
-
-
