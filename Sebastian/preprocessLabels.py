@@ -1,5 +1,6 @@
 import pickle
 import math
+import random
 
 labelFile = open('id2class_eurlex_eurovoc.qrels','r')
 
@@ -76,11 +77,44 @@ idf = {}
 for x in wDFull:
 	idf[x] = math.log(len(DataPoints)/wDFull[x])
 
+#Divide in Training Test Valid
+
+random.shuffle(DataPoints)
+
+train = 70
+valid = 10
+test = 20
+
+ntrain = round(len(DataPoints)*(train/100))
+nvalid = round(len(DataPoints)*(valid/100))
+
+
+
+TrainSet = []
+while ntrain > 0:
+	ntrain -= 1
+	TrainSet.append(DataPoints.pop(random.randrange(len(DataPoints))))
+
+ValidSet = []
+while nvalid > 0:
+	nvalid -= 1
+	ValidSet.append(DataPoints.pop(random.randrange(len(DataPoints))))
+
+TestSet = DataPoints
+
+
+print(len(TrainSet))
+print(len(ValidSet))
+print(len(TestSet))
+
+
 
 saveFile = {}
 
-saveFile['data'] = DataPoints
 
+saveFile['train'] = TrainSet
+saveFile['valid'] = ValidSet
+saveFile['test'] = TestSet
 saveFile['labelDict'] = labelDict
 saveFile['biDict'] = properBiDict
 saveFile['wordDictFull'] = properFullDict

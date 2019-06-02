@@ -3,3 +3,6 @@ Python : liac-arff
 https://github.com/LakshKD/liac-arff
 
 tensorflow, pickle, numpy
+
+https://github.com/vanHavel/bp-mll-tensorflow
+bp-mll.py
