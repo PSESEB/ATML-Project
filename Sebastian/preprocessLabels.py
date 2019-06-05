@@ -129,6 +129,6 @@ saveFile['wordDictSmall'] = properSmallDict
 saveFile['freqcountWords'] = wDFull
 saveFile['idf'] = idf
 
-pickle_out = open("dataWlabelsAndDicts.pkl","wb")
+pickle_out = open("dataWlabelsAndDictsSplitPen.pkl","wb")
 pickle.dump(saveFile, pickle_out)
 pickle_out.close()

@@ -7,20 +7,22 @@ import BuildVectors as bv
 from bp_mll import bp_mll_loss
 import random
 
-f = pickle.load( open( "dataWlabelsAndDicts.pkl", "rb" ))
+f = pickle.load( open( "dataWlabelsAndDictsSplitPen.pkl", "rb" ))
 
+data = f['train']
 
 BATCHSIZE = 1000
 NN_BATCHSIZE = 4
 EMBEDDINGSIZE = 256
 HIDDENSIZE = 512
-nbatches = len(f['data'])//BATCHSIZE
+nbatches = len(data)//BATCHSIZE
 
 
-data = f['data']
+
 random.shuffle(data)
 wdfull = f['wordDictSmall']
 labelDict = f['labelDict']
+labelCount = f['labelCount']
 
 batches = []
 for i in range(0,nbatches):
@@ -35,23 +37,23 @@ batches += [last_batch]
 def gen():
 	for batch in batches:
 		for b in batch:
-			yield (bv.sequenceTranslate(b[0].split(),wdfull),bv.translate(b[1],labelDict))
+			yield (bv.sequenceTranslate(b[0].split(),wdfull),bv.translate(b[1],labelDict),bv.translatePenalize(b[1],labelDict,labelCount))
 
 
 ds = tf.data.Dataset.from_generator(
-    gen, (tf.int64, tf.int64), (tf.TensorShape([None]), tf.TensorShape([None])))
+    gen, (tf.int64, tf.int64, tf.float32), (tf.TensorShape([None]), tf.TensorShape([None]), tf.TensorShape([None])))
 
 
 
 
 
-ds = ds.shuffle(20000).repeat().padded_batch(NN_BATCHSIZE,padded_shapes=([None],[None]), padding_values=(tf.constant(-1, dtype=tf.int64)
-                                                 ,tf.constant(-1, dtype=tf.int64)))
+ds = ds.shuffle(20000).repeat().padded_batch(NN_BATCHSIZE,padded_shapes=([None],[None],[None]), padding_values=(tf.constant(-1, dtype=tf.int64) ,
+	tf.constant(-1, dtype=tf.int64), tf.constant(0, dtype=tf.float32)))
 
 iterator = ds.make_one_shot_iterator()
 next_batch = iterator.get_next()
 
-text,label = next_batch
+text,label,penalize = next_batch
 
 Embedding = tf.Variable(tf.random_uniform(
     [len(wdfull)+1,EMBEDDINGSIZE],
@@ -103,7 +105,7 @@ def last_relevant(output, length):
 
 
 
-loss = bp_mll_loss(tf.cast(label,tf.float32),LSTM(text))
+loss = bp_mll_loss(tf.cast(label,tf.float32),LSTM(text),penalize)
 
 train_op = tf.train.AdamOptimizer(1e-4).minimize(loss)
 
@@ -119,6 +121,7 @@ with tf.Session() as sess:
         	_ , lols = sess.run([train_op,loss])
 
         	print(i)
+        	print(res.shape)
         	print(lols)
         	i += 1
             # we could e.g. print the shapes of the outputs to make sure they

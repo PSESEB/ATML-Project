@@ -4,7 +4,7 @@ import tensorflow as tf
 # bp mll loss function
 # y_true, y_pred must be 2D tensors of shape (batch dimension, number of labels)
 # y_true must satisfy y_true[i][j] == 1 iff sample i has label j
-def bp_mll_loss(y_true, y_pred):
+def bp_mll_loss(y_true, y_pred,penalize):
 
     # get true and false labels
     shape = tf.shape(y_true)
@@ -13,6 +13,9 @@ def bp_mll_loss(y_true, y_pred):
 
     # get indices to check
     truth_matrix = tf.to_float(pairwise_and(y_i, y_i_bar))
+    
+
+    truth_matrix = tf.multiply(truth_matrix, tf.expand_dims(penalize,2))
 
     # calculate all exp'd differences
     sub_matrix = pairwise_sub(y_pred, y_pred)

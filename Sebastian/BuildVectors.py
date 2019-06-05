@@ -10,6 +10,15 @@ def translate(inp, dic, invert_dict=False):
 			vec[dic[x]] += 1
 	return vec
 
+def translatePenalize(inp, dic, dic2, invert_dict=False):
+	if invert_dict:
+		dic = {v: k for k, v in dic.items()}
+	vec = np.ones(len(dic))
+	for x in inp:
+		if x in dic:
+			vec[dic[x]] = dic2[x]
+	return vec
+
 
 def sequenceTranslate(inp,dic,invert_dict=False):
 	if invert_dict:
