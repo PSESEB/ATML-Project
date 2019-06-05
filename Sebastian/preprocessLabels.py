@@ -7,6 +7,7 @@ labelFile = open('id2class_eurlex_eurovoc.qrels','r')
 labels = {}
 i = 0
 labelDict = {}
+lableCount = {}
 for x in labelFile:
 	temp = x.split()
 
@@ -18,8 +19,13 @@ for x in labelFile:
 	if temp[0] not in labelDict:
 		labelDict[temp[0]] = i
 		i = i+1
+	if temp[0] not in lableCount:
+		lableCount[temp[0]] = 1
+	else:
+		lableCount[temp[0]] += 1
 
-
+for k,v in lableCount.items():
+	lableCount[k] = 1/v
 
 
 data =  pickle.load( open( "dictsAndData.pkl", "rb" ))
@@ -116,6 +122,7 @@ saveFile['train'] = TrainSet
 saveFile['valid'] = ValidSet
 saveFile['test'] = TestSet
 saveFile['labelDict'] = labelDict
+saveFile['labelCount'] = lableCount
 saveFile['biDict'] = properBiDict
 saveFile['wordDictFull'] = properFullDict
 saveFile['wordDictSmall'] = properSmallDict
