@@ -16,11 +16,11 @@ ATML Project Eurlex Dataset MultiClass Problem
   Download the dataset zip file from: http://www.ke.tu-darmstadt.de/files/resources/eurlex/eurlex_download_EN_NOT.sh.gz
   1. Run the .sh script in terminal/cmd to get all the html files.
   2. Put in same Folder as the .py files
-  3. Run text_scraping_htmlwebscript.py
+  3. Run data_scraping.py
   4. You'll get a file named "final_scraped.csv" in your folder containing all the scraped text and labels (uncleaned!).
-  5. Run text_cleaning_htmlwebscript.py
+  5. Run data_cleaning.py within the same folder as "final_scraped.csv"
   6. You'll get a file named "final_cleaned.csv" in your folder containing all the cleaned text and labels.
-  7. Run remove_labels.py or duplicate_labels.py on "final_cleaned.csv" to sort imbalance issues.
+  7. Run remove_labels.py or duplicate_labels.py within the same folder as "final_cleaned.csv" to sort imbalance issues.
   8. You'll get a file named "imabalanced_labeles_removed.csv" or "imbalanced_labels_duplicated.csv" based on your script selection from step 5. 
 
   *You can find the sorted data in a .csv file here: https://drive.google.com/open?id=1cJQiNfzbkKRwRs8TdrQNQBDPXecb9M4Y*
