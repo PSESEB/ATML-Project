@@ -13,7 +13,7 @@ ATML Project Eurlex Dataset MultiClass Problem
   
   Note: Install Libraries like *pandas, nltk, bs4 and pathlib* before running the code! 
   
-  Download the dataset zip file from: http://www.ke.tu-darmstadt.de/files/resources/eurlex/eurlex_download_EN_NOT.sh.gz \
+  Download the dataset zip file from: http://www.ke.tu-darmstadt.de/files/resources/eurlex/eurlex_download_EN_NOT.sh.gz
   1. Run the .sh script in terminal/cmd to get all the html files.
   2. Put in same Folder as the .py files
   3. Run text_scraping_htmlwebscript.py
