@@ -60,4 +60,3 @@ for count, filename in enumerate(base.iterdir()):
 #Save the output in a dataframe and write output to .csv
 df = pd.DataFrame(docs)
 df.to_csv('final_scraped.csv', header = None, index = None)
-
