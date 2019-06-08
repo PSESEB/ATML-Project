@@ -35,5 +35,5 @@ ATML Project Eurlex Dataset MultiClass Problem
   5. Run remove_labels.py or duplicate_labels.py on "final_cleaned.csv" to sort imbalance issues.
   6. You'll get a file named "imabalanced_labeles_removed.csv" or "imbalanced_labels_duplicated.csv" based on your script selection from step 5. 
   
-  *You can find the final cleaned data in a .csv file here: https://drive.google.com/open?id=1u_TtIx7L3NeedbeJdJKBDf5WTpfeHIRi*
+  *You can find the final cleaned data in a .csv file here: https://drive.google.com/open?id=1u_TtIx7L3NeedbeJdJKBDf5WTpfeHIRi* \  
   *You can find the sorted data in a .csv file here: https://drive.google.com/open?id=1cJQiNfzbkKRwRs8TdrQNQBDPXecb9M4Y*
