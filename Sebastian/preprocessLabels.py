@@ -2,6 +2,7 @@ import pickle
 import math
 import random
 
+
 labelFile = open('id2class_eurlex_eurovoc.qrels','r')
 
 labels = {}
@@ -66,7 +67,6 @@ for x in wDSmall:
 
 
 
-
 DataPoints = []
 for doc in docs:
 	id_d = str(int(doc[0]))
@@ -76,12 +76,6 @@ for doc in docs:
 	else:
 		print("ID ",id_d," has no LABELS")
 
-
-
-###Calc IDF
-idf = {}
-for x in wDFull:
-	idf[x] = math.log(len(DataPoints)/wDFull[x])
 
 #Divide in Training Test Valid
 
@@ -127,8 +121,11 @@ saveFile['biDict'] = properBiDict
 saveFile['wordDictFull'] = properFullDict
 saveFile['wordDictSmall'] = properSmallDict
 saveFile['freqcountWords'] = wDFull
-saveFile['idf'] = idf
+saveFile['completeData'] = TrainSet+ValidSet+TestSet
+
 
 pickle_out = open("dataWlabelsAndDictsSplitPen.pkl","wb")
 pickle.dump(saveFile, pickle_out)
 pickle_out.close()
+
+

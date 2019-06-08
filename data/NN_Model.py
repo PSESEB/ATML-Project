@@ -30,28 +30,41 @@ for i in range(0,nbatches):
 	batches += [batch]
 	
 
-last_batch = data[nbatches*BATCHSIZE:]
-batches += [last_batch]
+if len(data)%BATCHSIZE != 0:
+	last_batch = data[nbatches*BATCHSIZE:]
+	batches += [last_batch]
+
 
 
 def gen():
 	for batch in batches:
 		for b in batch:
-			yield (bv.sequenceTranslate(b[0].split(),wdfull),bv.translate(b[1],labelDict),bv.translatePenalize(b[1],labelDict,labelCount))
+			yield (bv.sequenceTranslate(b[0].split(),wdfull) ,bv.translate(b[1],labelDict), bv.translatePenalize(b[1],labelDict,labelCount))
 
 
 ds = tf.data.Dataset.from_generator(
     gen, (tf.int64, tf.int64, tf.float32), (tf.TensorShape([None]), tf.TensorShape([None]), tf.TensorShape([None])))
 
 
-
-
+#text = tf.placeholder(tf.int64, name='text')
+#
+#label = tf.placeholder(dtype=tf.int64, name='label')
+#penalize = tf.placeholder(dtype=tf.float32, name='penalize')
+#
+#
+#dataset = tf.data.Dataset.from_tensor_slices((text,label,penalize))
 
 ds = ds.shuffle(20000).repeat().padded_batch(NN_BATCHSIZE,padded_shapes=([None],[None],[None]), padding_values=(tf.constant(-1, dtype=tf.int64) ,
 	tf.constant(-1, dtype=tf.int64), tf.constant(0, dtype=tf.float32)))
 
-iterator = ds.make_one_shot_iterator()
+iterator =  tf.data.Iterator.from_structure(ds.output_types, ds.output_shapes)
+dataset_init_op = iterator.make_initializer(ds, name='dataset_init')
+
 next_batch = iterator.get_next()
+
+
+
+
 
 text,label,penalize = next_batch
 
@@ -59,11 +72,11 @@ Embedding = tf.Variable(tf.random_uniform(
     [len(wdfull)+1,EMBEDDINGSIZE],
     minval=-0.2,
     maxval=0.2,
-    dtype=tf.float32))
+    dtype=tf.float32),name='emb')
 
 #For Softmax
-weight = tf.Variable(tf.truncated_normal([HIDDENSIZE, len(labelDict)], stddev=0.01))
-bias = tf.Variable(tf.constant(0.1, shape=[len(labelDict)]))
+weight = tf.Variable(tf.truncated_normal([HIDDENSIZE, len(labelDict)], stddev=0.01),name='w1')
+bias = tf.Variable(tf.constant(0.1, shape=[len(labelDict)]),name='b1')
 
 
 def LSTM(inp):
@@ -77,16 +90,16 @@ def LSTM(inp):
 
 	inp = tf.nn.embedding_lookup(Embedding,inp)
 	output, _ = tf.nn.dynamic_rnn(
-	    tf.contrib.rnn.GRUCell(HIDDENSIZE),
+	    tf.contrib.rnn.GRUCell(HIDDENSIZE,name='rnn'),
 	    inp,
 	    dtype=tf.float32,
-	    sequence_length=lengths,)
+	    sequence_length=lengths)
 	lr = last_relevant(output,lengths)
 
 	
 
 	#prediction = tf.nn.softmax(tf.matmul(lr, weight) + bias)
-	prediction = tf.nn.tanh(tf.matmul(lr, weight) + bias)
+	prediction = tf.nn.tanh(tf.matmul(lr, weight) + bias,name='prediction')
 
 	return prediction
 
@@ -109,23 +122,23 @@ loss = bp_mll_loss(tf.cast(label,tf.float32),LSTM(text),penalize)
 
 train_op = tf.train.AdamOptimizer(1e-4).minimize(loss)
 
+init_op = tf.global_variables_initializer()
+
+saver = tf.train.Saver()
+
 
 
 # try it out
 with tf.Session() as sess:
     i = 0
-    sess.run(tf.global_variables_initializer())
-    try:
-        while i < 1000:
+    sess.run(init_op)
+    sess.run(dataset_init_op)
 
-        	_ , lols = sess.run([train_op,loss])
-
-        	print(i)
-        	print(res.shape)
-        	print(lols)
-        	i += 1
-            # we could e.g. print the shapes of the outputs to make sure they
-            # make sense (should be (784,), ())
-    except tf.errors.OutOfRangeError:
-        print("Done!")
+    while i < 10:
+    	_ , lols = sess.run([train_op,loss])
+    	print(i)
+    	print(lols)
+    	i += 1
+    save_path = saver.save(sess, "LSTMmodel")
+    print("Model saved in path: %s" % save_path)
 
