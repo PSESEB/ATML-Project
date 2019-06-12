@@ -7,12 +7,12 @@ import BuildVectors as bv
 from bp_mll import bp_mll_loss
 import random
 
-f = pickle.load( open( "dataWlabelsAndDictsSplitPen.pkl", "rb" ))
+f = pickle.load( open( "dataWlabelsAndDictsSplitPenREMOVED.pkl", "rb" ))
 
 data = f['train']
 
 BATCHSIZE = 1000
-NN_BATCHSIZE = 4
+NN_BATCHSIZE = 3
 EMBEDDINGSIZE = 256
 HIDDENSIZE = 512
 nbatches = len(data)//BATCHSIZE
@@ -90,7 +90,7 @@ def LSTM(inp):
 
 	inp = tf.nn.embedding_lookup(Embedding,inp)
 	output, _ = tf.nn.dynamic_rnn(
-	    tf.contrib.rnn.GRUCell(HIDDENSIZE,name='rnn'),
+	    tf.contrib.rnn.LSTMBlockCell(HIDDENSIZE,name='rnn'),
 	    inp,
 	    dtype=tf.float32,
 	    sequence_length=lengths)
@@ -134,10 +134,13 @@ with tf.Session() as sess:
     sess.run(init_op)
     sess.run(dataset_init_op)
 
-    while i < 10:
+    while i < 25000:
     	_ , lols = sess.run([train_op,loss])
     	print(i)
     	print(lols)
+    	if i % 1000 == 0:
+    		save_path = saver.save(sess, "LSTMmodel")
+    		print("Model saved in path: %s" % save_path)
     	i += 1
     save_path = saver.save(sess, "LSTMmodel")
     print("Model saved in path: %s" % save_path)

@@ -2,7 +2,7 @@ from multiprocessing import Pool
 import pickle
 import math
 
-data =  pickle.load( open( "dataWlabelsAndDictsSplitPen.pkl", "rb" ))
+data =  pickle.load( open( "dataWlabelsAndDictsSplitPenREMOVED.pkl", "rb" ))
 
 wDFull = data['wordDictFull']
 
@@ -37,6 +37,6 @@ if __name__ == '__main__':
 	saveFile = {}
 	saveFile['counts'] = cdict
 	saveFile['idf'] = idf
-	pickle_out = open("IDF.pkl","wb")
+	pickle_out = open("IDFRemoved.pkl","wb")
 	pickle.dump(saveFile, pickle_out)
 	pickle_out.close()

@@ -1,4 +1,5 @@
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.externals import joblib
 import pickle, sys, os
 sys.path.insert(1, os.path.join(sys.path[0], '../Sebastian'))
 import BuildVectors as bv
@@ -8,7 +9,7 @@ import numpy as np
 
 f = pickle.load( open( "dataWlabelsAndDictsSplitPen.pkl", "rb" ))
 
-models = pickle.load( open( "MNBModels.pkl", "rb" ))
+models = joblib.load( open( "MNBModels.pkl", "rb" ))
 
 dat = f['test']
 

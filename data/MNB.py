@@ -1,6 +1,7 @@
 from sklearn.naive_bayes import MultinomialNB
 import pickle, sys, os
 sys.path.insert(1, os.path.join(sys.path[0], '../Sebastian'))
+from sklearn.externals import joblib
 import BuildVectors as bv
 import itertools
 import random
@@ -8,9 +9,9 @@ import random
 
 
 
-f = pickle.load( open( "dataWlabelsAndDictsSplitPen.pkl", "rb" ))
+f = pickle.load( open( "dataWlabelsAndDictsSplitPenREMOVED.pkl", "rb" ))
 
-idf = pickle.load( open( "IDF.pkl", "rb" ))
+idf = pickle.load( open( "IDFRemoved.pkl", "rb" ))
 
 dat = f['train']+f['valid']
 
@@ -49,8 +50,8 @@ for k,v in labelDict.items():
 		continue
 
 	#change between All other are negative(False) and only proportional amount is negative (True) 
-	if False:
-		numNegSamples = 1 * len(labelData)
+	if True:
+		numNegSamples = 12 * len(labelData)
 		negativeSamples = [data.pop(random.randrange(len(data))) for _ in range(numNegSamples)]
 		negativeSamples = [[x,y] for x, y in negativeSamples if k not in y]
 		while len(negativeSamples) != numNegSamples:
@@ -85,7 +86,7 @@ for k,v in labelDict.items():
 
 
 pickle_out = open("MNBModels.pkl","wb")
-pickle.dump(models, pickle_out)
+joblib.dump(models, pickle_out)
 pickle_out.close()
 
 

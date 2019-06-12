@@ -40,7 +40,7 @@ def LSTM(inp):
 
 	inp = tf.nn.embedding_lookup(Embedding,inp)
 	output, _ = tf.nn.dynamic_rnn(
-	    tf.contrib.rnn.GRUCell(HIDDENSIZE,name='rnn'),
+	    tf.contrib.rnn.LSTMBlockCell(HIDDENSIZE,name='rnn'),
 	    inp,
 	    dtype=tf.float32,
 	    sequence_length=lengths)
@@ -79,5 +79,14 @@ with tf.Session() as sess:
 
 
   pred = sess.run(prediction,feed_dict={text: [bv.sequenceTranslate(data[0][0].split(),wdfull)]})
+
+  pred = np.array(pred)
+
+  indices = pred > 0
+  
+  comp = np.zeros(pred.shape)
+
+  comp[indices] = 1
+
 
   print(pred)
