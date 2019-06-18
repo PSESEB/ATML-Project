@@ -9,7 +9,6 @@ ATML Project Eurlex Dataset MultiClass Problem
   3. Use BuildVectors.py to build number vectors
 
 ## Scraping and Cleaning:
-  ### Preprocessing
   
   Note: Install Libraries like *pandas, nltk, bs4 and pathlib* before running the code! 
   
