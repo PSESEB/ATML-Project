@@ -19,7 +19,7 @@ idfDict = idf['idf']
 
 wordDict = f['wordDictSmall']
 
-BATCHSIZE = 10
+BATCHSIZE = 1000
 
 labelDict = f['labelDict']
 
@@ -50,7 +50,7 @@ for k,v in labelDict.items():
 		continue
 
 	#change between All other are negative(False) and only proportional amount is negative (True) 
-	if True:
+	if False:
 		numNegSamples = 12 * len(labelData)
 		negativeSamples = [data.pop(random.randrange(len(data))) for _ in range(numNegSamples)]
 		negativeSamples = [[x,y] for x, y in negativeSamples if k not in y]
@@ -85,7 +85,7 @@ for k,v in labelDict.items():
 
 
 
-pickle_out = open("MNBModels.pkl","wb")
+pickle_out = open("MNBModelsDown.pkl","wb")
 joblib.dump(models, pickle_out)
 pickle_out.close()
 

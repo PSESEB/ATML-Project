@@ -1,7 +1,7 @@
 import tensorflow as tf
 import pickle, sys, os
 import numpy as np
-
+from sklearn.metrics import hamming_loss,zero_one_loss,jaccard_score, accuracy_score,f1_score
 
 sys.path.insert(1, os.path.join(sys.path[0], '../Sebastian'))
 import BuildVectors as bv
@@ -72,21 +72,45 @@ saver = tf.train.Saver()
 
 with tf.Session() as sess:
 
-  saver.restore(sess, tf.train.latest_checkpoint('./'))
+	saver.restore(sess, tf.train.latest_checkpoint('models/UpSampling/'))
 
-  graph = tf.get_default_graph()
-  
-
-
-  pred = sess.run(prediction,feed_dict={text: [bv.sequenceTranslate(data[0][0].split(),wdfull)]})
-
-  pred = np.array(pred)
-
-  indices = pred > 0
-  
-  comp = np.zeros(pred.shape)
-
-  comp[indices] = 1
+	graph = tf.get_default_graph()
 
 
-  print(pred)
+
+
+	pred = sess.run(prediction,feed_dict={text: [bv.sequenceTranslate(data[0][0].split(),wdfull)]})
+
+	pred = np.array(pred)
+	indices = pred > 0
+	comp = np.zeros(pred.shape)
+	comp[indices] = 1
+
+
+
+	for x in range(1,len(data)):
+		pred = sess.run(prediction,feed_dict={text: [bv.sequenceTranslate(data[0][0].split(),wdfull)]})
+
+
+		pred = np.array(pred)
+
+		indices = pred > 0
+		  
+		tmp = np.zeros(pred.shape)
+
+		tmp[indices] = 1
+
+		comp = np.concatenate((comp,tmp))
+
+
+
+	truths = np.array([bv.translate(b[1],labelDict) for b in data])
+
+	
+	print('Hamming Loss:', hamming_loss(comp,truths) )
+	print('Zero One Loss:', zero_one_loss(comp,truths) )
+	print('Jaccard Score:', jaccard_score(comp,truths,average='samples') )
+	print('F1-Score Micro:', f1_score(comp,truths,average='micro') )
+	print('F1-Score Macro:', f1_score(comp,truths,average='macro') )
+	print('Accuracy :', accuracy_score(comp,truths) )
+	

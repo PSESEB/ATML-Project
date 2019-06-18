@@ -4,23 +4,24 @@ import pickle, sys, os
 sys.path.insert(1, os.path.join(sys.path[0], '../Sebastian'))
 import BuildVectors as bv
 import numpy as np
+from sklearn.metrics import hamming_loss,zero_one_loss,jaccard_score, accuracy_score,f1_score
 
 
 
-f = pickle.load( open( "dataWlabelsAndDictsSplitPen.pkl", "rb" ))
+f = pickle.load( open( "dataWlabelsAndDictsSplitPenREMOVED.pkl", "rb" ))
 
-models = joblib.load( open( "MNBModels.pkl", "rb" ))
+models = joblib.load( open( "MNBModelsDown.pkl", "rb" ))
 
 dat = f['test']
 
-idf = pickle.load( open( "IDF.pkl", "rb" ))
+idf = pickle.load( open( "IDFRemoved.pkl", "rb" ))
 
 
 idfDict = idf['idf']
 
 wordDict = f['wordDictSmall']
 
-BATCHSIZE = 10
+BATCHSIZE = 1000
 
 labelDict = f['labelDict']
 
@@ -43,6 +44,8 @@ if len(dat)%BATCHSIZE != 0:
 	batchs += [last_batch]
 
 
+pred = np.array([], dtype=np.int64).reshape(0,len(labelDict))
+true = np.array([], dtype=np.int64).reshape(0,len(labelDict))
 
 for b in gen(batchs):
 	X,y = list(zip(*b))
@@ -54,6 +57,15 @@ for b in gen(batchs):
 			predL.append(v.predict(X))
 	preds = np.transpose(np.array(predL))
 	truths = np.array(y)
-	print(preds.shape,truths.shape)
+	pred = np.vstack([pred,preds])
+	true = np.vstack([true,truths])
+	print(pred.shape,true.shape)
+
+print('Hamming Loss:', hamming_loss(pred,true) )
+print('Zero One Loss:', zero_one_loss(pred,true) )
+print('Jaccard Score:', jaccard_score(pred,true,average='samples') )
+print('F1-Score Micro:', f1_score(pred,true,average='micro') )
+print('F1-Score Macro:', f1_score(pred,true,average='macro') )
+print('Accuracy :', accuracy_score(pred,true) )
 	
 
